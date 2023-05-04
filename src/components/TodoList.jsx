@@ -3,6 +3,7 @@ import AppModal from "./AppModal";
 
 const TodoList = ({ className, list, handleDelete }) => {
   const [modal, setModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
 
   const listItems = list.map((item) => (
     <li
@@ -14,6 +15,7 @@ const TodoList = ({ className, list, handleDelete }) => {
         <button
           className="btn btn-primary"
           onClick={() => {
+            setCurrentItem(item);
             setModal(true);
           }}
         >
@@ -36,7 +38,11 @@ const TodoList = ({ className, list, handleDelete }) => {
     <>
       <ul className={`list-group ${className}`}>{listItems}</ul>
       <AppModal modal={modal} setModal={setModal}>
-        Hey yo
+        <input
+          type="text"
+          className="form-control"
+          defaultValue={currentItem?.name}
+        />
       </AppModal>
     </>
   );
