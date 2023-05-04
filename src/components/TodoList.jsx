@@ -3,9 +3,6 @@ import AppModal from "./AppModal";
 
 const TodoList = ({ className, list, handleDelete }) => {
   const [modal, setModal] = useState(false);
-  const handleModalShown = (isShown) => {
-    setModal(isShown);
-  };
 
   const listItems = list.map((item) => (
     <li
@@ -38,7 +35,7 @@ const TodoList = ({ className, list, handleDelete }) => {
   return (
     <>
       <ul className={`list-group ${className}`}>{listItems}</ul>
-      <AppModal modal={modal} handleShowHide={handleModalShown}>
+      <AppModal modal={modal} setModal={setModal}>
         Hey yo
       </AppModal>
     </>

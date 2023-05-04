@@ -1,13 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Modal } from "bootstrap";
-const AppModal = ({
-  modal,
-  children,
-  header,
-  body,
-  footer,
-  handleShowHide,
-}) => {
+const AppModal = ({ modal, setModal, children, header, body, footer }) => {
   const modalElRef = useRef(null);
   const modalRef = useRef(null);
   const hasHeaderSlot = !!header;
@@ -27,15 +20,21 @@ const AppModal = ({
     };
     const handleShown = (event) => {
       console.log(event);
-      handleShowHide(true);
+      setModal(true);
     };
     const handleHidden = (event) => {
       console.log(event);
-      handleShowHide(false);
+      setModal(false);
     };
 
     initModal();
-  });
+
+    return () => {
+      modalElement.addEventListener("shown.bs.modal", handleShown);
+      modalElement.addEventListener("hidden.bs.modal", handleHidden);
+      console.log("unmount");
+    };
+  }, [setModal]);
 
   useEffect(() => {
     if (modal) {
