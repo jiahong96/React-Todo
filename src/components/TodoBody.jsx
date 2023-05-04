@@ -29,7 +29,12 @@ const TodoBody = ({ className }) => {
         onKeyUp={handleKeyUp}
       />
 
-      <TodoList className="mt-5" list={todoList} handleDelete={handleDelete} />
+      <TodoList
+        className="mt-5"
+        setTodoList={setTodoList}
+        list={todoList}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };

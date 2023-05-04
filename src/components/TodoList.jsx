@@ -1,9 +1,23 @@
 import { useState } from "react";
 import AppModal from "./AppModal";
 
-const TodoList = ({ className, list, handleDelete }) => {
+const TodoList = ({ className, list, setTodoList, handleDelete }) => {
   const [modal, setModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
+  const handleKeyUp = (event) => {
+    const value = event.target.value;
+    if (event.key === "Enter" && value) {
+      setTodoList(
+        list.map((item) => {
+          if (item.id !== currentItem.id) return item;
+
+          return { ...item, name: value };
+        })
+      );
+      setCurrentItem(null);
+      setModal(false);
+    }
+  };
 
   const listItems = list.map((item) => (
     <li
@@ -42,6 +56,8 @@ const TodoList = ({ className, list, handleDelete }) => {
           type="text"
           className="form-control"
           defaultValue={currentItem?.name}
+          key={currentItem?.id}
+          onKeyUp={handleKeyUp}
         />
       </AppModal>
     </>
