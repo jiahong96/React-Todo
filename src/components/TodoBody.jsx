@@ -13,7 +13,9 @@ const TodoBody = ({ className }) => {
   const [search, setSearch] = useState(null);
 
   const filteredTodoList = search
-    ? todoList.filter((item) => item.name.includes(search))
+    ? todoList.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase())
+      )
     : todoList;
 
   const handleKeyUp = (event) => {
