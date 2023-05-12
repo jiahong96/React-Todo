@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AppModal from "./AppModal";
+import TodoListItem from "./TodoListItem";
 
 const TodoList = ({ className, list, setTodoList, handleDelete }) => {
   const [modal, setModal] = useState(false);
@@ -18,34 +19,18 @@ const TodoList = ({ className, list, setTodoList, handleDelete }) => {
       setModal(false);
     }
   };
+  const handleUpdate = (item) => {
+    setCurrentItem(item);
+    setModal(true);
+  };
 
   const listItems = list.map((item) => (
-    <li
+    <TodoListItem
       key={item.id}
-      className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-    >
-      <span>{item.name}</span>
-      <div className="d-flex gap-3">
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            setCurrentItem(item);
-            setModal(true);
-          }}
-        >
-          Update
-        </button>
-        <button
-          className="btn btn-danger"
-          onClick={() => {
-            console.log("hey del");
-            handleDelete(item.id);
-          }}
-        >
-          Delete
-        </button>
-      </div>
-    </li>
+      item={item}
+      handleDelete={handleDelete}
+      handleUpdate={handleUpdate}
+    />
   ));
 
   return (
