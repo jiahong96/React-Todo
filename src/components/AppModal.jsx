@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Modal } from "bootstrap";
 const AppModal = ({ modal, setModal, children, header, body, footer }) => {
-  const modalElRef = useRef(null);
+  const modalInstanceRef = useRef(null);
   const modalRef = useRef(null);
   const hasHeaderSlot = !!header;
   const hasBodySlot = !!body;
@@ -11,19 +11,16 @@ const AppModal = ({ modal, setModal, children, header, body, footer }) => {
     const modalElement = modalRef.current;
 
     const initModal = () => {
-      if (!modalElRef.current) {
-        modalElRef.current = new Modal(modalElement);
-        modalElement.addEventListener("shown.bs.modal", handleShown);
-        modalElement.addEventListener("hidden.bs.modal", handleHidden);
-        console.log("hey init event");
+      if (!modalInstanceRef.current) {
+        modalInstanceRef.current = new Modal(modalElement);
       }
+      modalElement.addEventListener("shown.bs.modal", handleShown);
+      modalElement.addEventListener("hidden.bs.modal", handleHidden);
     };
     const handleShown = (event) => {
-      console.log(event);
       setModal(true);
     };
     const handleHidden = (event) => {
-      console.log(event);
       setModal(false);
     };
 
@@ -32,17 +29,14 @@ const AppModal = ({ modal, setModal, children, header, body, footer }) => {
     return () => {
       modalElement.addEventListener("shown.bs.modal", handleShown);
       modalElement.addEventListener("hidden.bs.modal", handleHidden);
-      console.log("unmount");
     };
   }, [setModal]);
 
   useEffect(() => {
     if (modal) {
-      modalElRef.current.show();
-      console.log(modal);
+      modalInstanceRef.current.show();
     } else {
-      modalElRef.current.hide();
-      console.log(modal);
+      modalInstanceRef.current.hide();
     }
   }, [modal]);
 
