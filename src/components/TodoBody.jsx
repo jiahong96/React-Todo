@@ -1,8 +1,11 @@
 import SearchInput from "./SearchInput";
 import TodoList from "./TodoList";
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 const TodoBody = ({ className }) => {
+  const user = useContext(UserContext);
   const [todoList, setTodoList] = useState([
     { id: 1, name: "hey" },
     { id: 2, name: "heyyo" },
@@ -39,7 +42,7 @@ const TodoBody = ({ className }) => {
       />
 
       <div className="card p-3">
-        <h2 className="card-title align-self-start fs-5">What chu wanna do?</h2>
+        <h2 className="card-title align-self-start fs-5">{`${user.name}, What chu wanna do?`}</h2>
         <input
           type="text"
           className="form-control"
