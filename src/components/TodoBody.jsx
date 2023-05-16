@@ -1,6 +1,6 @@
 import SearchInput from "./SearchInput";
 import TodoList from "./TodoList";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
@@ -12,11 +12,19 @@ const TodoBody = ({ className }) => {
   ]);
   const [search, setSearch] = useState(null);
 
-  const filteredTodoList = search
-    ? todoList.filter((item) =>
-        item.name.toLowerCase().includes(search.toLowerCase())
-      )
-    : todoList;
+  const getFilteredTodoList = (todos, search) => {
+    if (!search) return todos;
+    return todos.filter((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+  };
+
+  console.time("filter arr");
+  const filteredTodoList = useMemo(() => {
+    console.log("memo");
+    return getFilteredTodoList(todoList, search);
+  }, [todoList, search]);
+  console.timeEnd("filter arr");
 
   const handleKeyUp = (event) => {
     const value = event.target.value;
