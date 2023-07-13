@@ -3,13 +3,20 @@ import TodoList from "./TodoList";
 import { useMemo, useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo, deleteTodo } from "../store/todoSlice";
 
 const TodoBody = ({ className }) => {
   const user = useContext(UserContext);
-  const [todoList, setTodoList] = useState([
-    { id: 1, name: "hey" },
-    { id: 2, name: "heyyo" },
-  ]);
+  const todoList = useSelector((state) => {
+    return state.todo.todoList;
+  });
+  const dispatch = useDispatch();
+
+  // const [todoList, setTodoList] = useState([
+  //   { id: 1, name: "hey" },
+  //   { id: 2, name: "heyyo" },
+  // ]);
   const [search, setSearch] = useState(null);
 
   const getFilteredTodoList = (todos, search) => {
@@ -19,17 +26,18 @@ const TodoBody = ({ className }) => {
     );
   };
 
-  console.time("filter arr");
+  // console.time("filter arr");
   const filteredTodoList = useMemo(() => {
-    console.log("memo");
+    // console.log("memo");
     return getFilteredTodoList(todoList, search);
   }, [todoList, search]);
-  console.timeEnd("filter arr");
+  // console.timeEnd("filter arr");
 
   const handleKeyUp = (event) => {
     const value = event.target.value;
     if (event.key === "Enter" && value) {
-      setTodoList([...todoList, { id: todoList.length + 1, name: value }]);
+      dispatch(addTodo({ id: todoList.length + 1, name: value }));
+      // setTodoList([...todoList, { id: todoList.length + 1, name: value }]);
       event.target.value = "";
     }
   };
@@ -39,7 +47,8 @@ const TodoBody = ({ className }) => {
   };
 
   const handleDelete = (id) => {
-    setTodoList(todoList.filter((item) => item.id !== id));
+    dispatch(deleteTodo(id));
+    // setTodoList(todoList.filter((item) => item.id !== id));
   };
 
   return (
@@ -62,7 +71,7 @@ const TodoBody = ({ className }) => {
 
         <TodoList
           className="mt-5"
-          setTodoList={setTodoList}
+          // setTodoList={setTodoList}
           list={filteredTodoList}
           handleDelete={handleDelete}
         />
