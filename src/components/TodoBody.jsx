@@ -1,13 +1,12 @@
 import SearchInput from "./SearchInput";
 import TodoList from "./TodoList";
 import { useMemo, useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 import { useSelector, useDispatch } from "react-redux";
 import { addTodo, deleteTodo } from "../store/todoSlice";
 
 const TodoBody = ({ className }) => {
-  const user = useContext(UserContext);
+  const user = useUserContext();
   const todoList = useSelector((state) => {
     return state.todo.todoList;
   });
