@@ -4,16 +4,27 @@ import { useMemo, useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
-const TodoBody = ({ className }) => {
+interface TodoBodyProps {
+  className: string;
+}
+
+interface TodoItem {
+  id: number;
+  name: string;
+}
+
+const TodoBody = ({ className }: TodoBodyProps) => {
   const user = useContext(UserContext);
-  const [todoList, setTodoList] = useState([
+  const [todoList, setTodoList] = useState<TodoItem[]>([
     { id: 1, name: "hey" },
     { id: 2, name: "heyyo" },
   ]);
-  const [search, setSearch] = useState(null);
 
-  const getFilteredTodoList = (todos, search) => {
+  const [search, setSearch] = useState("");
+
+  const getFilteredTodoList = (todos, search): TodoItem[] => {
     if (!search) return todos;
+
     return todos.filter((item) =>
       item.name.toLowerCase().includes(search.toLowerCase())
     );
@@ -26,19 +37,23 @@ const TodoBody = ({ className }) => {
   }, [todoList, search]);
   console.timeEnd("filter arr");
 
-  const handleKeyUp = (event) => {
-    const value = event.target.value;
+  const handleKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    const el = event.target as HTMLInputElement;
+    const value = el.value;
     if (event.key === "Enter" && value) {
       setTodoList([...todoList, { id: todoList.length + 1, name: value }]);
-      event.target.value = "";
+      el.value = "";
     }
   };
-  const handleSearchInput = (event) => {
-    const value = event.target.value;
+  const handleSearchInput: React.KeyboardEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    const el = event.target as HTMLInputElement;
+    const value = el.value;
     setSearch(value);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: number) => {
     setTodoList(todoList.filter((item) => item.id !== id));
   };
 
