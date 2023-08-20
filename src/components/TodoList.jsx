@@ -1,20 +1,24 @@
 import { useState } from "react";
 import AppModal from "./AppModal";
 import TodoListItem from "./TodoListItem";
+import { useDispatch } from "react-redux";
+import { editTodo } from "../store/todoSlice";
 
-const TodoList = ({ className, list, setTodoList, handleDelete }) => {
+const TodoList = ({ className, list, handleDelete }) => {
+  const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const handleKeyUp = (event) => {
     const value = event.target.value;
     if (event.key === "Enter" && value) {
-      setTodoList(
-        list.map((item) => {
-          if (item.id !== currentItem.id) return item;
+      dispatch(editTodo({ id: currentItem.id, name: value }));
+      // setTodoList(
+      //   list.map((item) => {
+      //     if (item.id !== currentItem.id) return item;
 
-          return { ...item, name: value };
-        })
-      );
+      //     return { ...item, name: value };
+      //   })
+      // );
       setCurrentItem(null);
       setModal(false);
     }

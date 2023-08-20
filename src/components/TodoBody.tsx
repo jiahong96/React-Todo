@@ -1,8 +1,9 @@
 import SearchInput from "./SearchInput";
 import TodoList from "./TodoList";
 import { useMemo, useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo, deleteTodo } from "../store/todoSlice";
 
 interface TodoBodyProps {
   className: string;
@@ -14,11 +15,16 @@ interface TodoItem {
 }
 
 const TodoBody = ({ className }: TodoBodyProps) => {
-  const user = useContext(UserContext);
-  const [todoList, setTodoList] = useState<TodoItem[]>([
-    { id: 1, name: "hey" },
-    { id: 2, name: "heyyo" },
-  ]);
+  const user = useUserContext();
+  const todoList = useSelector((state) => {
+    return state.todo.todoList;
+  });
+  const dispatch = useDispatch();
+
+  // const [todoList, setTodoList] = useState<TodoItem[]>([
+  //   { id: 1, name: "hey" },
+  //   { id: 2, name: "heyyo" },
+  // ]);
 
   const [search, setSearch] = useState("");
 
@@ -30,18 +36,20 @@ const TodoBody = ({ className }: TodoBodyProps) => {
     );
   };
 
-  console.time("filter arr");
+  // console.time("filter arr");
   const filteredTodoList = useMemo(() => {
-    console.log("memo");
+    // console.log("memo");
     return getFilteredTodoList(todoList, search);
   }, [todoList, search]);
-  console.timeEnd("filter arr");
+  // console.timeEnd("filter arr");
 
   const handleKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const el = event.target as HTMLInputElement;
     const value = el.value;
     if (event.key === "Enter" && value) {
-      setTodoList([...todoList, { id: todoList.length + 1, name: value }]);
+      el.value = "";
+      dispatch(addTodo({ id: todoList.length + 1, name: value }));
+      // setTodoList([...todoList, { id: todoList.length + 1, name: value }]);
       el.value = "";
     }
   };
@@ -54,7 +62,8 @@ const TodoBody = ({ className }: TodoBodyProps) => {
   };
 
   const handleDelete = (id: number) => {
-    setTodoList(todoList.filter((item) => item.id !== id));
+    dispatch(deleteTodo(id));
+    // setTodoList(todoList.filter((item) => item.id !== id));
   };
 
   return (
@@ -77,7 +86,7 @@ const TodoBody = ({ className }: TodoBodyProps) => {
 
         <TodoList
           className="mt-5"
-          setTodoList={setTodoList}
+          // setTodoList={setTodoList}
           list={filteredTodoList}
           handleDelete={handleDelete}
         />
