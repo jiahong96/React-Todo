@@ -1,6 +1,23 @@
 import { useEffect, useRef } from "react";
 import { Modal } from "bootstrap";
-const AppModal = ({ modal, setModal, children, header, body, footer }) => {
+
+interface AppModalProps {
+  modal: boolean;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  children?: React.ReactNode;
+  header?: React.ReactNode;
+  body?: React.ReactNode;
+  footer?: React.ReactNode;
+}
+
+const AppModal = ({
+  modal,
+  setModal,
+  children,
+  header,
+  body,
+  footer,
+}: AppModalProps) => {
   const modalInstanceRef = useRef(null);
   const modalRef = useRef(null);
   const hasHeaderSlot = !!header;
@@ -17,10 +34,10 @@ const AppModal = ({ modal, setModal, children, header, body, footer }) => {
       modalElement.addEventListener("shown.bs.modal", handleShown);
       modalElement.addEventListener("hidden.bs.modal", handleHidden);
     };
-    const handleShown = (event) => {
+    const handleShown = (event: CustomEvent) => {
       setModal(true);
     };
-    const handleHidden = (event) => {
+    const handleHidden = (event: CustomEvent) => {
       setModal(false);
     };
 
@@ -41,7 +58,7 @@ const AppModal = ({ modal, setModal, children, header, body, footer }) => {
   }, [modal]);
 
   return (
-    <div className="modal" tabIndex="-1" ref={modalRef}>
+    <div className="modal" tabIndex={-1} ref={modalRef}>
       <div className="modal-dialog">
         <div className="modal-content">
           {hasHeaderSlot && <div className="modal-header">{header}</div>}
