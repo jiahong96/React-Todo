@@ -3,13 +3,22 @@ import AppModal from "./AppModal";
 import TodoListItem from "./TodoListItem";
 import { useDispatch } from "react-redux";
 import { editTodo } from "../store/todoSlice";
+import { TodoItem } from "../types/TodoItem";
 
-const TodoList = ({ className, list, handleDelete }) => {
+interface TodoListProps {
+  className: String;
+  list: TodoItem[];
+  handleDelete: (id: number) => void;
+}
+
+const TodoList = ({ className, list, handleDelete }: TodoListProps) => {
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
-  const handleKeyUp = (event) => {
-    const value = event.target.value;
+  const [currentItem, setCurrentItem] = useState<TodoItem | null>(null);
+
+  const handleKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    const el = event.target as HTMLInputElement;
+    const value = el.value;
     if (event.key === "Enter" && value) {
       dispatch(editTodo({ id: currentItem.id, name: value }));
       // setTodoList(
@@ -23,7 +32,8 @@ const TodoList = ({ className, list, handleDelete }) => {
       setModal(false);
     }
   };
-  const handleUpdate = (item) => {
+
+  const handleUpdate = (item: TodoItem) => {
     setCurrentItem(item);
     setModal(true);
   };
