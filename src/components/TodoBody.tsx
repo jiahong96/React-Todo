@@ -3,15 +3,11 @@ import TodoList from "./TodoList";
 import { useMemo, useState } from "react";
 import { useUserContext } from "../contexts/UserContext";
 import { useSelector, useDispatch } from "react-redux";
+import { TodoItem } from "../types/TodoItem";
 import { addTodo, deleteTodo } from "../store/todoSlice";
 
 interface TodoBodyProps {
   className: string;
-}
-
-interface TodoItem {
-  id: number;
-  name: string;
 }
 
 const TodoBody = ({ className }: TodoBodyProps) => {
