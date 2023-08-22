@@ -1,4 +1,16 @@
-const TodoListItem = ({ item, handleDelete, handleUpdate }) => {
+import { TodoItem } from "../types/TodoItem";
+
+interface TodoListItemProps {
+  item: TodoItem;
+  handleDelete: (id: number) => void;
+  handleUpdate: (item: TodoItem) => void;
+}
+
+const TodoListItem = ({
+  item,
+  handleDelete,
+  handleUpdate,
+}: TodoListItemProps) => {
   return (
     <li
       key={item.id}
