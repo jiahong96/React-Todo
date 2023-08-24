@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { TodoItem } from "../types/TodoItem";
 import { addTodo, deleteTodo } from "../store/todoSlice";
 import { RootState } from "../store";
+import { v4 as uuidv4 } from "uuid";
 
 interface TodoBodyProps {
   className: string;
@@ -45,7 +46,7 @@ const TodoBody = ({ className }: TodoBodyProps) => {
     const value = el.value;
     if (event.key === "Enter" && value) {
       el.value = "";
-      dispatch(addTodo({ id: todoList.length + 1, name: value }));
+      dispatch(addTodo({ id: uuidv4(), name: value }));
       // setTodoList([...todoList, { id: todoList.length + 1, name: value }]);
       el.value = "";
     }

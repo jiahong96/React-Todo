@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TodoItem } from "../types/TodoItem";
+import { v4 as uuidv4 } from 'uuid';
 
 interface State {
   todoList: TodoItem[]
@@ -7,8 +8,8 @@ interface State {
 
 const initialState: State = {
   todoList: [
-    { id: 1, name: "hey" },
-    { id: 2, name: "heyyo" },
+    { id: uuidv4(), name: "hey" },
+    { id: uuidv4(), name: "heyyo" },
   ],
 }
 
