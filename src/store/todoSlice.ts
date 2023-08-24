@@ -1,25 +1,35 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { TodoItem } from "../types/TodoItem";
+
+interface State {
+  todoList: TodoItem[]
+}
+
+const initialState: State = {
+  todoList: [
+    { id: 1, name: "hey" },
+    { id: 2, name: "heyyo" },
+  ],
+}
+
+type TodoAction = PayloadAction<TodoItem>
+type TodoActionWithId = PayloadAction<number>
 
 export const todoSlice = createSlice({
   name: "todoList",
-  initialState: {
-    todoList: [
-      { id: 1, name: "hey" },
-      { id: 2, name: "heyyo" },
-    ],
-  },
+  initialState,
   reducers: {
-    addTodo: (state, action) => {
+    addTodo: (state: State, action: TodoAction) => {
       state.todoList.push(action.payload);
     },
-    editTodo: (state, action) => {
+    editTodo: (state: State, action: TodoAction) => {
       state.todoList = state.todoList.map((item) => {
         if (item.id !== action.payload.id) return item;
 
         return { ...item, name: action.payload.name };
       });
     },
-    deleteTodo: (state, action) => {
+    deleteTodo: (state: State, action: TodoActionWithId) => {
       // Either Construct a new result array immutably and return it
       // return {
       //   todoList: state.todoList.filter((item) => item.id !== action.payload),
