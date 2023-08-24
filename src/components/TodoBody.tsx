@@ -5,6 +5,7 @@ import { useUserContext } from "../contexts/UserContext";
 import { useSelector, useDispatch } from "react-redux";
 import { TodoItem } from "../types/TodoItem";
 import { addTodo, deleteTodo } from "../store/todoSlice";
+import { RootState } from "../store";
 
 interface TodoBodyProps {
   className: string;
@@ -12,8 +13,8 @@ interface TodoBodyProps {
 
 const TodoBody = ({ className }: TodoBodyProps) => {
   const user = useUserContext();
-  const todoList = useSelector((state) => {
-    return state.todo.todoList;
+  const todoList = useSelector((state: RootState) => {
+    return state.todoList.todoList;
   });
   const dispatch = useDispatch();
 
