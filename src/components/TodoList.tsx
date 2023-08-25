@@ -50,7 +50,15 @@ const TodoList = ({ className, list, handleDelete }: TodoListProps) => {
   return (
     <>
       <ul className={`list-group ${className}`}>{listItems}</ul>
-      <AppModal modal={modal} setModal={setModal}>
+      <AppModal
+        modal={modal}
+        setModal={setModal}
+        header={(id) => (
+          <h3 id={id} className="fs-5">
+            Update {currentItem?.name}
+          </h3>
+        )}
+      >
         <input
           type="text"
           className="form-control"
