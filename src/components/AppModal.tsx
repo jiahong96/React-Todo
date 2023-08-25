@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import { Modal } from "bootstrap";
 
 interface AppModalProps {
   modal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   children?: React.ReactNode;
-  header?: React.ReactNode;
+  header?: (headingId: string) => React.ReactNode;
   body?: React.ReactNode;
   footer?: React.ReactNode;
 }
@@ -18,6 +18,7 @@ const AppModal = ({
   body,
   footer,
 }: AppModalProps) => {
+  const modalHeaderId = useId();
   const modalInstanceRef = useRef(null);
   const modalRef = useRef(null);
   const hasHeaderSlot = !!header;
@@ -58,10 +59,19 @@ const AppModal = ({
   }, [modal]);
 
   return (
-    <div className="modal" tabIndex={-1} ref={modalRef}>
+    <div
+      role="dialog"
+      aria-labelledby={modalHeaderId}
+      aria-hidden="true"
+      className="modal"
+      tabIndex={-1}
+      ref={modalRef}
+    >
       <div className="modal-dialog">
         <div className="modal-content">
-          {hasHeaderSlot && <div className="modal-header">{header}</div>}
+          {hasHeaderSlot && (
+            <div className="modal-header">{header(modalHeaderId)}</div>
+          )}
           {hasBodySlot && <div className="modal-body">{body}</div>}
           {hasFooterSlot && <div className="modal-footer">{footer}</div>}
           {children}
