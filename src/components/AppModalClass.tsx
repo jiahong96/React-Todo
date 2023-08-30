@@ -11,7 +11,14 @@ interface AppModalProps {
 }
 
 interface AppModalState {}
-class AppModalClass extends React.Component<AppModalProps> {
+
+class AppModalClass extends React.Component<AppModalProps, AppModalState> {
+  modalInstanceRef: React.ref;
+  modalRef: React.ref;
+  hasHeaderSlot: boolean;
+  hasBodySlot: boolean;
+  hasFooterSlot: boolean;
+
   constructor(props: AppModalProps) {
     super(props);
     this.modalInstanceRef = React.createRef();
